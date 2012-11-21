@@ -23,7 +23,7 @@ import org.jfugue.Player;
 @SuppressWarnings("serial")
 public class SongPlayer extends SGui implements ActionListener, KeyListener, MouseListener {
 	// Window Screen
-	private static final Color BACKGROUND_COLOR = Color.GRAY;
+	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	//
 	// Don't modify following variables
 	//

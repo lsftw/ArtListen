@@ -1,0 +1,19 @@
+
+V1 F5h E#5w F5w V2 A#5w E5h+C#5h | V1 F#5h F5w F#5w V2 G4w C5h+D#5h
+
+
+
+
+V0 Eb6h D6q Eb6q
+V1 C5q G5h+C6h
+V0 Eb6h D6q Eb6q V1 C5q G5h+C6h
+
+V0 F6h Eb6q F6q
+V1 B5q F5h+Bb6h
+V0 F6h Eb6w F6w V1 B5q F5h+Bb6h
+
+V0 G6h A7q
+V1 E5q Bb6q+Eb6q Bb6q+Eb6q
+V0 G6h A7q V1 E5q Bb6q+Eb6q Bb6q+Eb6q
+
+V0 Eb6h D6q Eb6q V1 C5q G5h+C6h | V0 F6h Eb6q F6q V1 B5q F5h+Bb6h | V0 G6h A7q V1 E5q Bb6q+Eb6q Bb6q+Eb6q 

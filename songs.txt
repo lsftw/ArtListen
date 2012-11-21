@@ -1,0 +1,69 @@
+
+/*
+
+BASE SONG ["V1 Rs | " should be at very beginning to cause delay]
+V1 Rs | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+
+SONG ADDITION
+V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rh V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Ch
+
+ADDITION AT END
+V1 Rs | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi | V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rh V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Ch
+
+ADDITION AT FRONT *preferred!
+V1 Rs | V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rh V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Ch | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+
+ */
+
+/* tweaking chamber #2 - no addition
+V1 Rs | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+
+V1 Rs | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi Ri Di Ei Di Di Ei Ei V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi Ri Di Ei Di Di Ei Ei
+
+
+V1 Rs | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi Gs i As Ai V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi Gs Ai As Ai
+ */
+
+/* tweaking chamber
+V1 Rs | V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rh V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Ch | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+
+best current tweak - transition added
+V1 Rs
+V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rq Ei Ei Di V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Cq Ei Ei Di
+V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+V1 Rs | V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rq Ei Ei Di V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Cq Ei Ei Di | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+
+V1 Rs | V0 Es Fi Es Fi Rq Aq Fi Es Fi Es Fi Rq Ei Ei Di V1 Fi Es Fi Es Dh Ei Fs Ei Fs Ei Cq Ei Ei Di | V0 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi V1 Di Ds Di Ds Ei Es Ei Ei Fi Ci Fi Gi Ei Fi Gi
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+song2
+Cs Ch Ch Cq Cw
+Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw
+...
+Cq Dq Eq Eh Dqs Cq Ch
+Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch
+
+V0 Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw
+V1 Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch
+|
+V0 Cs Ch Ch Cq Cw V1 Cq Dq Eq Eh Dqs Cq Ch
+V0 Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw V1 Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch
+||
+V0 Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw V1 Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch
+
+V0 Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw V1 I[Flute] Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch
+V0 Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw Cs Ch Ch Cq Cw V1 I[Flute] Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch Cq Dq Eq Eh Dqs Cq Ch

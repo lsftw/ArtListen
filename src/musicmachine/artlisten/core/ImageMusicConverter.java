@@ -1,4 +1,4 @@
-package musicmachine.artlisten;
+package musicmachine.artlisten.core;
 
 import java.awt.image.BufferedImage;
 

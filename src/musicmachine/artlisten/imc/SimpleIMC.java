@@ -1,10 +1,11 @@
-package musicmachine.artlisten;
+package musicmachine.artlisten.imc;
 
 import java.awt.image.BufferedImage;
 
+import musicmachine.artlisten.core.ImageMusicConverter;
+
 // Pixel by Pixel IMC, each individual pixel corresponds to a note and each note is independent of other notes
-// Durations for notes are longer
-public class SimpleIMC_Slow implements ImageMusicConverter {
+public class SimpleIMC implements ImageMusicConverter {
 	public String convert(BufferedImage image) {
 		String musicString = "";
 		int rgb, r, g, b;
@@ -44,14 +45,35 @@ public class SimpleIMC_Slow implements ImageMusicConverter {
 	private static String toDuration(int b) {
 		b = 6 * b / 255;
 		switch (b) {
-		case 0: return "t";
-		case 1: return "s";
-		case 2: return "st";
-		case 3: return "i";
-		case 4: return "q";
-		case 5: return "h";
-		case 6: return "w";
+		case 0: return "o";
+		case 1: return "x";
+		case 2: return "xo";
+		case 3: return "t";
+		case 4: return "tx";
+		case 5: return "s";
+		case 6: return "i";
 		}
 		return "[badduration:" + b + "]";
 	}
 }
+/*
+Red (Pitch)
+A255*0/6
+B255*1/6
+C255*2/6
+D255*3/6
+E255*4/6
+F255*5/6
+G255*6/6
+Green (Octave)
+(8/255) * GREEN
+Blue (Duration)
+(6/255) * BLUE
+0:i
+1:q
+2:h
+3:w
+4:wi
+5:wq
+6:wh
+ */

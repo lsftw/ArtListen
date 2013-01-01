@@ -2,7 +2,6 @@ package musicmachine.artlisten.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -105,7 +104,7 @@ public abstract class ImageFilePanel extends JPanel implements ActionListener {
 	public void setCurrentDirectory(File dir) {
 		chooser.setCurrentDirectory(dir);
 	}
-	public Image getImage() {
+	public BufferedImage getImage() {
 		return image;
 	}
 	public void setImage(BufferedImage image) {

@@ -21,10 +21,9 @@ import musicmachine.artlisten.imc.CrunchIMC;
 
 import org.jfugue.Player;
 
-// TODO threading, synchronization
 @SuppressWarnings("serial")
 public class ArtListenSwingRunner extends JPanel implements ActionListener, FileChosenListener {
-	public static final String TITLE = "Art Listen Image Music Converter";
+	public static final String TITLE = "Art Listen - Image Music Converter";
 	public static final int WINDOW_HEIGHT = 800;
 	public static final int WINDOW_WIDTH = 600;
 	protected static final File DEFAULT_DIRECTORY = new File(System.getProperty("user.dir"));

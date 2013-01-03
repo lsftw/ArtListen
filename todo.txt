@@ -1,5 +1,3 @@
-clean up old files
-listen to all of bonfires
 
 find out how to jump to time for midi files
 

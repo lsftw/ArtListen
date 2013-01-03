@@ -14,21 +14,24 @@ public class ImageLoadPanel extends ImageFilePanel {
 		super(name);
 	}
 
+	public void loadImageFile(File file) {
+		try {
+			setImage(ImageIO.read(file));
+			setImageFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Failed to load image \"" + file.getName() + "\". Make sure you have permission to access the file.",
+					"Image Load Failure", JOptionPane.ERROR_MESSAGE);
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(this, "\"" + file.getName() + "\" is not an image.",
+					"Invalid File Type", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	public void actionPerformed(ActionEvent ae) {
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File selected = chooser.getSelectedFile();
-			try {
-				setImage(ImageIO.read(selected));
-				setImageFile(selected);
-			} catch (IOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Failed to load image \"" + selected.getName() + "\". Make sure you have permission to access the file.",
-						"Image Load Failure", JOptionPane.ERROR_MESSAGE);
-			} catch (IllegalArgumentException e) {
-				JOptionPane.showMessageDialog(this, "\"" + selected.getName() + "\" is not an image.",
-						"Invalid File Type", JOptionPane.ERROR_MESSAGE);
-			}
+			loadImageFile(chooser.getSelectedFile());
 		}
 	}
 }

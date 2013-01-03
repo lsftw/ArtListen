@@ -16,14 +16,12 @@ import javax.swing.SwingUtilities;
 
 import musicmachine.artlisten.core.ImageMusicConverter;
 import musicmachine.artlisten.gui.FileChosenListener;
-import musicmachine.artlisten.gui.ImageFilePanel;
 import musicmachine.artlisten.gui.ImageLoadPanel;
 import musicmachine.artlisten.imc.CrunchIMC;
 
 import org.jfugue.Player;
 
 // TODO threading, synchronization
-// TODO stop or pause?
 @SuppressWarnings("serial")
 public class ArtListenSwingRunner extends JPanel implements ActionListener, FileChosenListener {
 	public static final String TITLE = "Art Listen Image Music Converter";
@@ -45,9 +43,10 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 	protected JButton btnSaveSong = new JButton();
 	protected static final String STOP_UNUSABLE = "Stop";
 	protected static final String STOP_CONVERTING = "Stop Converting";
-	protected static final String STOP_PLAYING = "Stop Playing";
+	protected static final String STOP_PLAYING = "Pause Playing";
+	protected static final String STOP_RESUME = "Resume Playing";
 	protected JButton btnStop = new JButton();
-	protected ImageFilePanel imagePanel = new ImageLoadPanel("song");
+	protected ImageLoadPanel imagePanel = new ImageLoadPanel("song");
 
 	protected boolean convertingImage = false;
 	protected boolean playingImage = false;
@@ -56,12 +55,14 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 
 	protected static final int NUM_VOICES = 10;
 	protected ImageMusicConverter imc = new CrunchIMC(NUM_VOICES);
-	protected Player musician = new Player();
-	protected String musicStr;
+	protected MusicianThread musicianThread = new MusicianThread();
 	protected File curFile;
+
+	protected boolean fakingFileChange = false; // used in a rare state warning
 
 	public ArtListenSwingRunner() {
 		super(new BorderLayout());
+		musicianThread.start();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				setupGui();
@@ -113,6 +114,9 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		} else if (savedMidi) {
 			btnSaveMidi.setText(MIDI_SAVED);
 			btnSaveMidi.setEnabled(false);
+		} else if (playingImage) {
+			btnSaveMidi.setText(MIDI_UNSAVED);
+			btnSaveMidi.setEnabled(true);
 		} else {
 			btnSaveMidi.setText(MIDI_UNSAVED);
 			btnSaveMidi.setEnabled(false);
@@ -124,11 +128,19 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		} else if (savedSong) {
 			btnSaveSong.setText(SONG_SAVED);
 			btnSaveSong.setEnabled(false);
+		} else if (playingImage) {
+			btnSaveSong.setText(SONG_UNSAVED);
+			btnSaveSong.setEnabled(true);
 		} else {
 			btnSaveSong.setText(SONG_UNSAVED);
 			btnSaveSong.setEnabled(false);
 		}
-		btnProcess.setEnabled(imagePanel.hasFileSelected());
+
+		if (musicianThread.isSongPaused()) {
+			btnStop.setText(STOP_RESUME);
+			btnStop.setEnabled(true);
+		}
+		btnProcess.setEnabled(imagePanel.hasFileSelected() && !playingImage);
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -140,56 +152,44 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		} else if (src == btnSaveSong) {
 			saveSong();
 		} else if (src == btnStop) {
-			stop();
+			stopCurrent();
 		}
 	}
 	protected void process() {
 		// TODO make it threaded and handle flag flipping cases when manually Stopped
 		if (!convertingImage && !playingImage) {
 			setConvertingImage(true);
-			curFile = imagePanel.getImageFile();
-			musicStr = imc.convert(imagePanel.getImage());
+			musicianThread.setSong(imc.convert(imagePanel.getImage()));
 			setConvertingImage(false);
-			setPlayingImage(true);
-			musician.play(musicStr);
-			setPlayingImage(false);
+			musicianThread.playSong();
 		}
 	}
 	protected void saveMidi() {
-		// TODO handle being manually Stopped if pausing is implemented
 		if (playingImage && !savedMidi) {
 			File midiFile = getMidiSaveFile();
 			try {
-				setSavingMidi(true);
-				musician.saveMidi(musicStr, midiFile);
-				setSavedMidi(true);
+				musicianThread.saveMidi(midiFile);
 			} catch (IOException ex) {
+				setSavingMidi(false);
 				ex.printStackTrace();
 				JOptionPane.showMessageDialog(this, "Failed to save midi \"" + midiFile.getAbsolutePath() + "\"." +
 						" Make sure you have permission to access the file.",
-						"Midi Save Failure", JOptionPane.INFORMATION_MESSAGE);
-			} finally {
-				setSavingMidi(false);
+						"Midi Save Failure", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 	protected void saveSong() {
-		// TODO handle being manually Stopped if pausing is implemented
 		if (playingImage && !savedSong) {
 			File songFile = getSongSaveFile();
 			try {
-				setSavingSong(true);
-				FileWriter writer = new FileWriter(songFile);
-				writer.write(musicStr);
-				writer.close();
+				musicianThread.saveSong(songFile);
 				setSavedSong(true);
 			} catch (IOException ex) {
+				setSavingSong(false);
 				ex.printStackTrace();
 				JOptionPane.showMessageDialog(this, "Failed to save song to text file \"" + songFile.getAbsolutePath() + "\"." +
 						" Make sure you have permission to access the file.",
-						"Song Save Failure", JOptionPane.INFORMATION_MESSAGE);
-			} finally {
-				setSavingSong(false);
+						"Song Save Failure", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -199,11 +199,46 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 	protected File getSongSaveFile() {
 		return new File(curFile.getName() + "-" + NUM_VOICES + "_song.txt");
 	}
-	protected void stop() {
-		// TODO Auto-generated method stub
+	protected void stopCurrent() {
+		if (musicianThread.isSongPaused()) {
+			musicianThread.resumeSong();
+		} else {
+			musicianThread.pauseSong();
+		}
 	}
 	public void fileChosen(File file) {
-		// TODO stop musician, continue saves?
+		// File change while saving might cause state errors, but this warning should rarely appear
+		if (fakingFileChange) {
+			fakingFileChange = false;
+			return;
+		}
+		boolean resumeAfterwards = false;
+		if (musicianThread.isSongStarted()) {
+			if (!musicianThread.isSongPaused()) {
+				musicianThread.pauseSong();
+				resumeAfterwards = true;
+			}
+		}
+		if (savingMidi || savingSong) {
+			int choice = JOptionPane.showConfirmDialog(this,
+					"Ongoing saves are occurring. Changing file at this time may result in errors.\nContinue anyway?",
+					"Saving Incomplete", JOptionPane.YES_NO_OPTION);
+			if (choice != JOptionPane.YES_OPTION) {
+				fakingFileChange = true;
+				imagePanel.loadImageFile(curFile);
+				if (musicianThread.isSongPaused() && resumeAfterwards) {
+					musicianThread.resumeSong();
+				}
+				return;
+			}
+		}
+
+		// Normal file switch case
+		curFile = file;
+		if (musicianThread.isSongStarted()) {
+			musicianThread.setSong(null);
+			musicianThread.stopSong();
+		}
 		setConvertingImage(false);
 		setPlayingImage(false);
 		setSavingMidi(false);
@@ -247,5 +282,71 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		window.add(panel);
 		window.setVisible(true);
 		panel.revalidate();
+	}
+
+	public class MusicianThread extends Thread {
+		protected Player musician = new Player();
+		protected String song;
+		protected boolean begun = false;
+
+		public synchronized void run() {
+			while (true) {
+				while (!begun) {
+					try {
+						wait();
+					} catch (InterruptedException e) { }
+				}
+				begun = false;
+				if (song != null) {
+					setPlayingImage(true);
+					musician.play(song);
+					setPlayingImage(false);
+				}
+			}
+		}
+
+		public synchronized void playSong() {
+			begun = true;
+			notifyAll();
+		}
+
+		public boolean isSongStarted() {
+			return musician.isStarted();
+		}
+		public boolean isSongPaused() {
+			return musician.isPaused();
+		}
+		public void pauseSong() {
+			musician.pause();
+			updateButtons();
+		}
+		public void resumeSong() {
+			musician.resume();
+			updateButtons();
+		}
+		public void stopSong() {
+			musician.stop();
+			setPlayingImage(false);
+			updateButtons();
+		}
+
+		public void setSong(String song) {
+			this.song = song;
+		}
+
+		public void saveMidi(File midiFile) throws IOException {
+			setSavingMidi(true);
+			musician.saveMidi(song, midiFile);
+			setSavingMidi(false);
+			setSavedMidi(true);
+		}
+		public void saveSong(File songFile) throws IOException {
+			setSavingSong(true);
+			FileWriter writer = new FileWriter(songFile);
+			writer.write(song);
+			writer.close();
+			setSavingSong(false);
+			setSavedSong(true);
+		}
 	}
 }

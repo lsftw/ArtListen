@@ -31,11 +31,11 @@ public class ArtListenConsoleRunner {
 			if (args.length >= 1) {
 				imagePath = getArgs(args);
 			} else {
-				System.out.println("Usage: imc <imageFile>");
+				System.out.println("Usage: imc <imageFile> or imc gui");
 				return;
 			}
 		} else {
-			System.out.println("Usage: imc <imageFile>");
+			System.out.println("Usage: imc <imageFile> or imc gui");
 			return;
 		}
 		ImageMusicConverter imc = new CrunchIMC(NUMBER_VOICES);

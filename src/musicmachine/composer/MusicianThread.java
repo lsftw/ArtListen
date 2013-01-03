@@ -5,14 +5,14 @@ public class MusicianThread extends Thread {
 	Player musician = new Player();
 	String song = "";
 	boolean playing = false;
-	volatile boolean shouldstop = false;
-	boolean ranonce = false;
-	//
+	volatile boolean shouldStop = false;
+	boolean ranOnce = false;
+
 	public void run() {
-		ranonce = true;
+		ranOnce = true;
 		playing = true;
 		while (true) {
-			while (!shouldstop) {
+			while (!shouldStop) {
 				musician.play(song);
 				playing = true;
 			}
@@ -24,12 +24,12 @@ public class MusicianThread extends Thread {
 			}
 		}
 	}
-	//
-	public void stopASAP() {
+
+	public void stopAsap() {
 		musician.stop();
-		shouldstop = true;
+		shouldStop = true;
 	}
 	public void restart() {
-		shouldstop = false;
+		shouldStop = false;
 	}
 }

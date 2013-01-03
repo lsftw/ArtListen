@@ -35,17 +35,17 @@ public abstract class SGui extends JPanel {
 	public SGui() {
 		setBackground(Color.WHITE);
 	}
-	//
+
 	public void inception() {
 		drawer.start();
 	}
-	//
+
 	public void paintComponent(Graphics g) {
 		if (ibuff == null) {
 			ibuff = this.createImage(SCREEN_X, SCREEN_Y);
 			gbuff = ibuff.getGraphics();
 		}
-		//
+
 		//gbuff.setColor(getBackground());
 		//gbuff.fillRect(0, 0, this.getWidth(), this.getHeight()); // clear buffer
 		gbuff.clearRect(0, 0, this.getWidth(), this.getHeight()); // clear buffer
@@ -53,7 +53,7 @@ public abstract class SGui extends JPanel {
 		g.drawImage(ibuff, 0, 0, this); // copy buffer to current image
 	}
 	protected abstract void drawGUI(Graphics g);
-	//
+
 	protected void resetfps() {
 		// reset fps to average to prevent overflow from count_frames or time_fpscount
 		count_frames = count_frames*1000/time_fpscount;
@@ -61,7 +61,7 @@ public abstract class SGui extends JPanel {
 		count_framereset = count_frames + FPS_RESET_INTERVAL;
 	}
 	public abstract void dt();
-	//
+
 	protected void setTitle(String title) {
 		Container c = this.getTopLevelAncestor();
 		((JFrame)c).setTitle(title);
@@ -77,7 +77,7 @@ public abstract class SGui extends JPanel {
 	//////////////////////////////////////////////////////
 	protected class DrawingThread extends Thread {
 		SGui instance;
-		//
+
 		public DrawingThread(SGui instance) { this.instance = instance;  }
 		// Constantly update screen image
 		public void run() {

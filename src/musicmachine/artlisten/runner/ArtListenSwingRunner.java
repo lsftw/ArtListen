@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import musicmachine.artlisten.core.ImageMusicConverter;
 import musicmachine.artlisten.gui.FileChosenListener;
@@ -31,7 +29,6 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 	public static final String TITLE = "Art Listen Image Music Converter";
 	public static final int WINDOW_HEIGHT = 800;
 	public static final int WINDOW_WIDTH = 600;
-	protected static final Border PADDING_BORDER = new EmptyBorder(10,10,10,10);
 	protected static final File DEFAULT_DIRECTORY = new File(System.getProperty("user.dir"));
 
 	protected static final String PROCESS_READY = "Convert & Play";
@@ -72,7 +69,6 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		});
 	}
 	protected void setupGui() {
-		imagePanel.setBorder(PADDING_BORDER);
 		imagePanel.setCurrentDirectory(DEFAULT_DIRECTORY);
 		imagePanel.addFileChosenListener(this);
 
@@ -94,7 +90,6 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		btnProcess.setEnabled(false);
 	}
 	protected void updateButtons() {
-		// TODO clean up logic for midi/song unsaved saving saved
 		if (convertingImage) {
 			btnProcess.setText(PROCESS_CONVERTING);
 			btnProcess.setEnabled(false);
@@ -149,7 +144,6 @@ public class ArtListenSwingRunner extends JPanel implements ActionListener, File
 		}
 	}
 	protected void process() {
-		// TODO Auto-generated method stub
 		// TODO make it threaded and handle flag flipping cases when manually Stopped
 		if (!convertingImage && !playingImage) {
 			setConvertingImage(true);

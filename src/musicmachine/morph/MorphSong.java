@@ -6,19 +6,19 @@ import java.util.Scanner;
 import org.jfugue.Pattern;
 import org.jfugue.Player;
 
+// TODO use fitness
 public class MorphSong {
 	public static HashMap<String, String> mutations = new HashMap<String, String>();
 	public static HashMap<String, Integer> fitness = new HashMap<String, Integer>();
-	// TODO use fitness
-	//
+
 	public static void main(String[] args) {
 		loadMutations1();
-		//
+
 		Player musician = new Player();
 		Pattern musicPlaying = new Pattern("A5 C4 D3");
 		Scanner kb = new Scanner(System.in);
 		String input;
-		//
+
 		System.out.println("Song: " + musicPlaying);
 		while (true) {
 			System.out.print(">");
@@ -100,7 +100,7 @@ public class MorphSong {
 		mutations.put("C5", "A5");
 		mutations.put("C2", "D3");
 	}
-	//
+
 	public static Pattern mutate(Pattern pattern) {
 		StringBuffer temp = new StringBuffer();
 		String[] tokens = pattern.getTokens();
@@ -116,9 +116,7 @@ public class MorphSong {
 		}
 		return noteString;
 	}
-	//
-	//
-	//
+
 	static class Song {
 		String musicString;
 		int fitness = 0;

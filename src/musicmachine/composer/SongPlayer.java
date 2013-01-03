@@ -29,11 +29,11 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 	//
 	// Song related
 	private ArrayList<MusicianThread> musicians = new ArrayList<MusicianThread>();
-	private int manipindex = 0;
+	private int manipIndex = 0;
 	// Error Handling
-	private StringWriter exceptionwriter = new StringWriter();
-	private PrintWriter exceptionhandler = new PrintWriter(exceptionwriter);//converts stack trace to string
-	//
+	private StringWriter exceptionWriter = new StringWriter();
+	private PrintWriter exceptionHandler = new PrintWriter(exceptionWriter);//converts stack trace to string
+
 	public SongPlayer() {
 		// Listeners
 		this.addMouseListener(this);
@@ -46,7 +46,7 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 	//////////////////////////////////////////////////
 	public void drawGUI(Graphics g) {
 		for (int i = 0; i < musicians.size(); i++) {
-			if (i == manipindex) {
+			if (i == manipIndex) {
 				gbuff.setColor(Color.YELLOW);
 				if (musicians.get(i).playing) {
 					gbuff.setColor(Color.GREEN);
@@ -58,13 +58,13 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 			}
 			gbuff.drawString(i + ": " + musicians.get(i).song, 10, 32 + i * 20);
 		}
-		if (manipindex == musicians.size()) {
-			gbuff.drawString(manipindex + "...", 10, 32 + manipindex * 20);
+		if (manipIndex == musicians.size()) {
+			gbuff.drawString(manipIndex + "...", 10, 32 + manipIndex * 20);
 		}
 	}
 	public void dt() {
 	}
-	//
+
 	private static void setupGUI() {
 		JFrame frame = new JFrame("Song Player");
 		// Frame Setup
@@ -76,7 +76,7 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 		frame.add(program);
 		frame.addMouseListener(program);
 		frame.addKeyListener(program);
-		//
+
 		program.inception();
 		frame.setVisible(true);
 	}
@@ -92,27 +92,27 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 	//               Misc Methods               //
 	//////////////////////////////////////////////
 	public String exceptiontostr(Exception ex) {
-		ex.printStackTrace(exceptionhandler);
-		return exceptionwriter.toString();
+		ex.printStackTrace(exceptionHandler);
+		return exceptionWriter.toString();
 	}
-//	private void addNote(String note) {
-//		if (manipindex < musicians.size()) {
-//			musicians.get(manipindex).song += ' ' + note;
-//		} else {
-//			musicians.add(new MusicianThread());
-//			musicians.get(manipindex).song += ' ' + note;
-//		}
-//	}
-//	private boolean removeNote() {
-//		if (manipindex < musicians.size()) {
-//			String song = musicians.get(manipindex).song;
-//			if (song.length() >= 2) {
-//				musicians.get(manipindex).song = song.substring(0, song.length() - 2);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+	//	private void addNote(String note) {
+	//		if (manipindex < musicians.size()) {
+	//			musicians.get(manipindex).song += ' ' + note;
+	//		} else {
+	//			musicians.add(new MusicianThread());
+	//			musicians.get(manipindex).song += ' ' + note;
+	//		}
+	//	}
+	//	private boolean removeNote() {
+	//		if (manipindex < musicians.size()) {
+	//			String song = musicians.get(manipindex).song;
+	//			if (song.length() >= 2) {
+	//				musicians.get(manipindex).song = song.substring(0, song.length() - 2);
+	//				return true;
+	//			}
+	//		}
+	//		return false;
+	//	}
 	/////////////////////////////////////////
 	//               Actions               //
 	/////////////////////////////////////////
@@ -148,7 +148,7 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 			break;*/
 		case KeyEvent.VK_F5:
 			try {
-				musicians.get(manipindex).musician.saveMidi(musicians.get(manipindex).song, new File(JOptionPane.showInputDialog("Midi Name")));
+				musicians.get(manipIndex).musician.saveMidi(musicians.get(manipIndex).song, new File(JOptionPane.showInputDialog("Midi Name")));
 			} catch (HeadlessException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -164,14 +164,14 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 			/*MusicianThread temp = new MusicianThread();
 			temp.start();
 			musicians.add(temp);*/
-			if (manipindex < musicians.size()) {
-				if (musicians.get(manipindex).playing) { // stop the music
-					musicians.get(manipindex).stopASAP();
-				} else if (!musicians.get(manipindex).playing) {
-					if (musicians.get(manipindex).ranonce) { // start again
-						musicians.get(manipindex).restart();
+			if (manipIndex < musicians.size()) {
+				if (musicians.get(manipIndex).playing) { // stop the music
+					musicians.get(manipIndex).stopAsap();
+				} else if (!musicians.get(manipIndex).playing) {
+					if (musicians.get(manipIndex).ranOnce) { // start again
+						musicians.get(manipIndex).restart();
 					} else { // first time starting
-						musicians.get(manipindex).start();
+						musicians.get(manipIndex).start();
 					}
 				}
 			} else {
@@ -180,10 +180,10 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 			break;
 		case KeyEvent.VK_BACK_SPACE:
 			//removeNote();
-			if (manipindex < musicians.size()) {
-				String song = musicians.get(manipindex).song;
+			if (manipIndex < musicians.size()) {
+				String song = musicians.get(manipIndex).song;
 				if (song.length() >= 1) {
-					musicians.get(manipindex).song = song.substring(0, song.length() - 1);
+					musicians.get(manipIndex).song = song.substring(0, song.length() - 1);
 				}
 			}
 			break;
@@ -198,15 +198,15 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 			}
 			break;
 		case KeyEvent.VK_UP:
-			manipindex--;
-			if (manipindex < 0) {
-				manipindex = musicians.size();
+			manipIndex--;
+			if (manipIndex < 0) {
+				manipIndex = musicians.size();
 			}
 			break;
 		case KeyEvent.VK_DOWN:
-			manipindex++;
-			if (manipindex > musicians.size()) {
-				manipindex = 0;
+			manipIndex++;
+			if (manipIndex > musicians.size()) {
+				manipIndex = 0;
 			}
 			break;
 		default:
@@ -217,11 +217,11 @@ public class SongPlayer extends SGui implements ActionListener, KeyListener, Mou
 	public void keyTyped(KeyEvent ke) {
 		if (!validKey(ke.getKeyChar())) return;
 		System.out.print("Typed something...   ");
-		if (manipindex < musicians.size()) {
-			musicians.get(manipindex).song += ke.getKeyChar();
+		if (manipIndex < musicians.size()) {
+			musicians.get(manipIndex).song += ke.getKeyChar();
 		} else {
 			musicians.add(new MusicianThread());
-			musicians.get(manipindex).song += ke.getKeyChar();
+			musicians.get(manipIndex).song += ke.getKeyChar();
 		}
 		System.out.print("Added char: (" + ke.getKeyChar() + ")");
 		if (ke.getKeyChar() == ' ') System.out.print(" space");

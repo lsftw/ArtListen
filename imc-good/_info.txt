@@ -8,9 +8,6 @@ minimalist version
 bonfire-grayscale.png-10
 faded out
 
-dementia.png-10
-atmospheric and jumbled
-
 watching.png-15
 good stuff
 actually sounds coherent
